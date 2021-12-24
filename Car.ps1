@@ -5,13 +5,23 @@ Class Car {
     [double] $FuelConsumption
     [double] $CurrentFuel
 
-    [String] ToString()
+    Car (
+        [String] $Brand,
+        [string] $Model,
+        [int] $DoorsAmount,
+        [double] $FuelConsumption,
+        [double] $CurrentFuel
+        )
     {
-        return $this.Brand + ":"
-        + $this.Model + ":"
-        + $this.DoorsAmount + ":"
-        + $this.FuelConsumption + ":"
-        + $this.CurrentFuel
+        $this.Brand = $Brand
+        $this.Model = $Model
+        $this.DoorsAmount = $DoorsAmount
+        $this.FuelConsumption = $FuelConsumption
+        $this.CurrentFuel = $CurrentFuel
+    }
+
+    [String] ToString(){
+        return "brand = $($this.Brand),model = $($this.Model),doors amount = $($this.DoorsAmount),fuel consumption = $($this.FuelConsumption),current fuel = $($this.CurrentFuel)"
     }
     [string]KmLeft(){
         if ($this.CurrentFuel -le 0 -or $this.FuelConsumption -le 0) {
@@ -22,14 +32,17 @@ Class Car {
     }
 
     [string]HoursLeft([int]$HoursPerKm){
-        $result = 0
         $kmToSec =[timespan]::FromSeconds([math]::Round($this.CurrentFuel / $this.FuelConsumption * 100, 2)/$HoursPerKm * 60 * 60)
         return $kmToSec.ToString("hh' hours 'mm' minutes 'ss' seconds'")
 
     }
 }
-$newCat = [car]::new()
-$newCat.FuelConsumption = 10
-$newCat.CurrentFuel = 60
-$newCat.KmLeft()
-$newCat.HoursLeft(100)
+$audiCar = [Car]::new("Audi", "A5s", 3, 10.1, 50)
+$audiCar.ToString()
+
+# $newCat = [car]::new()
+# $newCat.FuelConsumption = 10
+# $newCat.CurrentFuel = 60
+# $newCat.KmLeft()
+# $newCat.HoursLeft(100)
+
