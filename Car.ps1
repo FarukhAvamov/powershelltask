@@ -13,15 +13,23 @@ Class Car {
         + $this.FuelConsumption + ":"
         + $this.CurrentFuel
     }
-    [string]KmLet(){
-        if ($this.CurrentFuel -eq 0)
+    [string]KmLeft(){
+        if ($this.CurrentFuel -le 0 -or $this.FuelConsumption -le 0) {
+            return "Wrond data"
+        } else {
+            return [math]::Round($this.CurrentFuel / $this.FuelConsumption * 100, 2);
+        }
+    }
+
+    [string]HoursLeft([int]$HoursPerKm){
+        $result = 0
+        $kmToSec =[timespan]::FromSeconds([math]::Round($this.CurrentFuel / $this.FuelConsumption * 100, 2)/$HoursPerKm * 60 * 60)
+        return $kmToSec.ToString("hh' hours 'mm' minutes 'ss' seconds'")
+
     }
 }
 $newCat = [car]::new()
-$newCat.ToString()
-s
-# · Возвращающий строку, в которой перечислены все свойства объекта
-
-# · Возвращающий информацию о количестве километров, которые еще можно проехать
-
-# · Возвращающий информацию о количестве часов, которые еще можно проехать
+$newCat.FuelConsumption = 10
+$newCat.CurrentFuel = 60
+$newCat.KmLeft()
+$newCat.HoursLeft(100)
