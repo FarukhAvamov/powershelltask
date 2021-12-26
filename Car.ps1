@@ -5,6 +5,7 @@ Class Car {
     [double] $FuelConsumption
     [double] $CurrentFuel
 
+    #Constructor
     Car (
         [String] $Brand,
         [String] $Model,
@@ -29,6 +30,8 @@ Class Car {
         current fuel = $($this.CurrentFuel)
         "
     }
+
+
     [String]KmLeft(){
         if ($this.CurrentFuel -le 0 -or $this.FuelConsumption -le 0) {
             return "Wrond data"
@@ -45,6 +48,7 @@ Class Car {
 }
 
 Class TwoDoorCar : Car {
+    # Using parent constructor and setting constant parameter for $DoorsAmount. This value has to be 2
     TwoDoorCar(
         [String] $Brand,
         [String] $Model,
@@ -54,12 +58,17 @@ Class TwoDoorCar : Car {
     }
 }
 
-
+#Creating class instance
 [Car]$newCar = [TwoDoorCar]::new("Audi", "RS5", 10.2, 50.5)
 
-$json = ConvertTo-Json($newCar);
-Invoke-WebRequest 127.0.0.1 -Body $json -Method Post -UseBasicParsing
+#Convert object to Json
+$toJson = $newCar | ConvertTo-Json
+$toJson
+#Convert json to object
+$fromJson =$toJson | ConvertFrom-Json
+$fromJson
 
-
-
-
+#Sending Json to localhost
+#It's necessary to specify URL using exactly your path
+#Since I used XAMPP control panel and you can use other
+Invoke-WebRequest -Body $toJson -Method Post
